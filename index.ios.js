@@ -7,14 +7,20 @@
 import React from 'react';
 import {
   AppRegistry,
-  Text
+  Text,
+  View
 } from 'react-native';
 
-import Header from './src/components/header.js'
+import Header from './src/components/header.js';
+import Venues from './src/components/venues.js';
+
 
 const App = () => {
     return (
-        <Header headerText={"NUS VenueFinder"}/>
+    	<View>
+        	<Header headerText={"NUS VenueFinder"}/>
+        	<Venues />
+        </View>
     );
 }
 
