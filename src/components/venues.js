@@ -2,6 +2,13 @@ import React, { Component } from 'react'
 import {Text, View, ListView} from 'react-native'
 
 import VenueSingle from './venueSingle.js'
+import VenueAvailable from './venueAvailable.js'
+
+import venuesData from '../data/venuesData.js'
+import venueInfoData from '../data/venueInfoData.js'
+
+var moment = require('moment');
+
 
 
 class Venues extends Component{
@@ -11,11 +18,12 @@ class Venues extends Component{
 	    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 	    this.state = {
 	      venues: ds.cloneWithRows([]),
+	      venueInfo: []
 	    };
 	 } 
 
 	componentWillMount(){
-	    fetch('http://api.nusmods.com/venuesRaw.json')
+	    fetch('http://api.nusmods.com/2016-2017/2/venues.json')
 	      .then((response) => response.json())
 	      .then((responseJson) => {
 	        this.setState({venues: this.state.venues.cloneWithRows(responseJson)})
@@ -23,19 +31,40 @@ class Venues extends Component{
 	      .catch((error) => {
 	        console.error(error);
 	    });
+
+	    fetch('http://api.nusmods.com/2016-2017/2/venueInformation.json')
+	      .then((response) => response.json())
+	      .then((responseJson) => {
+	      	var room = "LT17"
+	        this.setState({venueInfo: responseJson[room]})
+	      })
+	      .catch((error) => {
+	        console.error(error);
+	    });
+	    
 	}
 
-	renderVenues(){
-		return this.state.venues.map(venue => <VenueSingle key={venue.roomcode} venue={venue}/>)
+	getAvailableVenues(){
+		var currDay = moment().format('d') - 1 
+		var currHour = moment().format('HH')
+		var currMin = moment().format('mm') < 30 ? "00" : "30"
+		var currTimeStart = currHour + currMin 
+
+		return venuesData.venues.map(venue => <VenueAvailable key={venue} venue={venue} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
 	}
+
 
 	render(){
-		console.log('try')
+		var currHour = moment().format('HH')
+		var currMin = moment().format('mm') < 30 ? "00" : "30"
+		var currTimeStart = currHour + currMin 
+
 		return (
-			<ListView
-		        dataSource={this.state.venues}
-		        renderRow={(venue) => <VenueSingle key={venue.roomcode} venue={venue}/>}
-		    />
+			<View>
+				<Text>Day: {moment().format('d')-1}</Text>
+				<Text>Time: {currTimeStart}</Text>
+				{this.getAvailableVenues()}
+			</View>
     	);
 	}
 
