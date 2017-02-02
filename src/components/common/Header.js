@@ -14,7 +14,7 @@ const Header = (props) =>{
 
 const styles = {
 	viewStyle: {
-		backgroundColor: '#90EE90', // 90EE90
+		backgroundColor: '#003D7E', // 90EE90
 		justifyContent: 'center',
 		alignItems: 'center',
 		height: 40,
@@ -26,7 +26,8 @@ const styles = {
 		position: 'relative'
 	},
 	textStyle: {
-		fontSize: 20
+		fontSize: 20,
+		color: '#ffffff'
 	}
 };
 
