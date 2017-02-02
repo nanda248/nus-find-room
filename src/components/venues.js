@@ -9,8 +9,6 @@ import venueInfoData from '../data/venueInfoData.js'
 
 var moment = require('moment');
 
-
-
 class Venues extends Component{
 
 	constructor() {
@@ -50,7 +48,10 @@ class Venues extends Component{
 		var currMin = moment().format('mm') < 30 ? "00" : "30"
 		var currTimeStart = currHour + currMin 
 
-		return venuesData.venues.map(venue => <VenueAvailable key={venue} venue={venue} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
+		var timeSelected = currTimeStart
+		var daySelected = currDay
+
+		return venuesData.venues.map(venue => <VenueAvailable key={venue} venue={venue} venueInfoData={venueInfoData} daySelected={daySelected} timeSelected={timeSelected} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
 	}
 
 
