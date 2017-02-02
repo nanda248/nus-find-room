@@ -4,25 +4,7 @@
  * @flow
  */
 
-import React from 'react';
-import {
-  AppRegistry,
-  Text,
-  View
-} from 'react-native';
-
-import Header from './src/components/header.js';
-import Venues from './src/components/venues.js';
-
-
-const App = () => {
-    return (
-    	<View>
-        	<Header headerText={"NUS VenueFinder"}/>
-        	<Venues />
-        </View>
-    );
-}
-
+import {AppRegistry} from 'react-native';
+import App from './src/App';
 
 AppRegistry.registerComponent('NUSFindRoom', () => App);

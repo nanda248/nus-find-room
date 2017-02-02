@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {Text, View, ListView} from 'react-native'
+import {Text, View, ListView, ScrollView} from 'react-native'
+import {Card, CardSection} from './common'
 
 import VenueSingle from './venueSingle.js'
 import VenueAvailable from './venueAvailable.js'
@@ -11,8 +12,8 @@ var moment = require('moment');
 
 class Venues extends Component{
 
-	constructor() {
-	    super();
+	conmponentWillMount() {
+	    // super();
 	    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 	    this.state = {
 	      venues: ds.cloneWithRows([]),
@@ -20,27 +21,27 @@ class Venues extends Component{
 	    };
 	 } 
 
-	componentWillMount(){
-	    fetch('http://api.nusmods.com/2016-2017/2/venues.json')
-	      .then((response) => response.json())
-	      .then((responseJson) => {
-	        this.setState({venues: this.state.venues.cloneWithRows(responseJson)})
-	      })
-	      .catch((error) => {
-	        console.error(error);
-	    });
+	// componentWillMount(){
+	//     fetch('http://api.nusmods.com/2016-2017/2/venues.json')
+	//       .then((response) => response.json())
+	//       .then((responseJson) => {
+	//         this.setState({venues: this.state.venues.cloneWithRows(responseJson)})
+	//       })
+	//       .catch((error) => {
+	//         console.error(error);
+	//     });
 
-	    fetch('http://api.nusmods.com/2016-2017/2/venueInformation.json')
-	      .then((response) => response.json())
-	      .then((responseJson) => {
-	      	var room = "LT17"
-	        this.setState({venueInfo: responseJson[room]})
-	      })
-	      .catch((error) => {
-	        console.error(error);
-	    });
+	//     fetch('http://api.nusmods.com/2016-2017/2/venueInformation.json')
+	//       .then((response) => response.json())
+	//       .then((responseJson) => {
+	//       	var room = "LT17"
+	//         this.setState({venueInfo: responseJson[room]})
+	//       })
+	//       .catch((error) => {
+	//         console.error(error);
+	//     });
 	    
-	}
+	// }
 
 	getAvailableVenues(){
 		var currDay = moment().format('d') - 1 
@@ -52,6 +53,7 @@ class Venues extends Component{
 		var daySelected = currDay
 
 		return venuesData.venues.map(venue => <VenueAvailable key={venue} venue={venue} venueInfoData={venueInfoData} daySelected={daySelected} timeSelected={timeSelected} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
+
 	}
 
 
@@ -61,11 +63,12 @@ class Venues extends Component{
 		var currTimeStart = currHour + currMin 
 
 		return (
-			<View>
-				<Text>Day: {moment().format('d')-1}</Text>
-				<Text>Time: {currTimeStart}</Text>
-				{this.getAvailableVenues()}
-			</View>
+				<ScrollView>
+					{/*<Text>Day: {moment().format('d')-1}</Text>
+				<Text>Time: {currTimeStart}</Text>*/}
+					{this.getAvailableVenues()}
+				</ScrollView>
+			
     	);
 	}
 
