@@ -5,7 +5,6 @@ import {Card, CardSection} from './common'
 import VenueSingle from './venueSingle.js'
 import VenueAvailable from './venueAvailable.js'
 
-import venuesData from '../data/venuesData.js'
 import venueInfoData from '../data/venueInfoData.js'
 
 var moment = require('moment');
@@ -52,21 +51,28 @@ class Venues extends Component{
 		var timeSelected = currTimeStart
 		var daySelected = currDay
 
-		return venuesData.venues.map(venue => <VenueAvailable key={venue} venue={venue} venueInfoData={venueInfoData} daySelected={daySelected} timeSelected={timeSelected} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
+		var venues = this.props.venues
+
+		return venues.map(venue => <VenueAvailable key={venue} venue={venue} venueInfoData={venueInfoData} daySelected={daySelected} timeSelected={timeSelected} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
 
 	}
 
 
 	render(){
+
+		const {page, bottomSpace} = styles;
+
 		var currHour = moment().format('HH')
 		var currMin = moment().format('mm') < 30 ? "00" : "30"
 		var currTimeStart = currHour + currMin 
 
 		return (
-				<ScrollView>
+				<ScrollView  style={page}>
 					{/*<Text>Day: {moment().format('d')-1}</Text>
-				<Text>Time: {currTimeStart}</Text>*/}
+					<Text>Time: {currTimeStart}</Text>*/}
 					{this.getAvailableVenues()}
+					<View style={bottomSpace}>
+					</View>
 				</ScrollView>
 			
     	);
@@ -74,6 +80,16 @@ class Venues extends Component{
 
 
 }
+
+const styles = {
+  page: {
+    backgroundColor: '#ddd',
+  },
+  bottomSpace: {
+  	marginBottom: 80
+  }
+
+};	
 
 export default Venues;
 
