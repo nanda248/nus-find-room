@@ -10,9 +10,9 @@ class VenueAvailable extends Component{
 	venueAvailability(venue, venueInfoData, daySelected){
 		var times = ["0800", "0830", "0900", "0930", "1000", "1030", "1100", "1130", "1200", "1230", "1300", "1330", "1400", "1430", "1500", "1530", "1600", "1630", "1700", "1730", "1800", "1830", "1900", "1930", "2000", "2030", "2100", "2130", "2200", "2230", "2300"]
 		return times.map(time => {if (venueInfoData.venueInfo[venue][daySelected].availability[time] === "vacant") {
-										return <Text key={time} style={{color:"green"}}>{time}, </Text>;
+										return <Text key={time} style={{color:"#51A351"}}>{time}, </Text>;
 									} else {
-										return <Text key={time} style={{color:"red"}}>{time}, </Text>;
+										return <Text key={time} style={{color:"#BD362F"}}>{time}, </Text>;
 									}
 								})
 
@@ -31,18 +31,25 @@ class VenueAvailable extends Component{
 
 		var dayWord = venueInfoData.venueInfo[venue][daySelected].day
 
+		availColor = "#51A351"
+		if(availability === "occupied") 
+			availColor = "#BD362F"
+ 
 		return (
 
 			<Card>
-				<CardSection>
-					<Text style={titleTextStyle}> {venue} - {availability}</Text>
+				<CardSection style={contentStyle}>
+					<Text style={titleTextStyle}>
+						&nbsp;<View style={{width: 10, height: 10, borderRadius: 5, backgroundColor: availColor}} /> 
+						&nbsp;{venue} 
+					</Text>
 				</CardSection>
 				<CardSection>
 					<View style={contentStyle}>
 						<Text style={messageTextStyle}>Availability for {dayWord}:</Text>
 						<Text style={messageTextStyle}>
 							{this.venueAvailability(venue, venueInfoData, daySelected)}
-							<Text  style={{color:"green"}}>2230 </Text>
+							<Text  style={{color:"#51A351"}}>2330 </Text>
 						</Text>
 					</View>
 				</CardSection>
@@ -57,7 +64,8 @@ class VenueAvailable extends Component{
 const styles = {
 	contentStyle: {
 		marginTop: 5,
-		width: width
+		width: width,
+		paddingLeft: 8
 	},
 	messageTextStyle: {
 		fontSize: 12,

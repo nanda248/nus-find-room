@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, View, StyleSheet } from 'react-native';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
-import ListViewExample from './ListViewExample';
 import Venues from './venues';
 
 import venuesData from '../data/venuesData.js'
@@ -13,7 +12,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   indicator: {
-    backgroundColor: '#ff4081',
+    backgroundColor: '#FF900A',
     opacity:0
   },
   label: {
@@ -91,7 +90,7 @@ export default class Tabview extends Component {
 
   _renderLabel = (props: any) => ({ route, index }) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
-    const outputRange = inputRange.map(inputIndex => inputIndex === index ? '#D6356C' : '#222');
+    const outputRange = inputRange.map(inputIndex => inputIndex === index ? '#FF900A' : '#222');
     const color = props.position.interpolate({
       inputRange,
       outputRange,

@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
-import {Text, View, ListView, ScrollView} from 'react-native'
+import {Dimensions, Text, View, ListView, ScrollView} from 'react-native'
 import {Card, CardSection} from './common'
 
-import VenueSingle from './venueSingle.js'
 import VenueAvailable from './venueAvailable.js'
 
 import venueInfoData from '../data/venueInfoData.js'
 
 var moment = require('moment');
+
+height = Dimensions.get('window').height
 
 class Venues extends Component{
 
@@ -20,30 +21,10 @@ class Venues extends Component{
 	    };
 	 } 
 
-	// componentWillMount(){
-	//     fetch('http://api.nusmods.com/2016-2017/2/venues.json')
-	//       .then((response) => response.json())
-	//       .then((responseJson) => {
-	//         this.setState({venues: this.state.venues.cloneWithRows(responseJson)})
-	//       })
-	//       .catch((error) => {
-	//         console.error(error);
-	//     });
-
-	//     fetch('http://api.nusmods.com/2016-2017/2/venueInformation.json')
-	//       .then((response) => response.json())
-	//       .then((responseJson) => {
-	//       	var room = "LT17"
-	//         this.setState({venueInfo: responseJson[room]})
-	//       })
-	//       .catch((error) => {
-	//         console.error(error);
-	//     });
-	    
-	// }
 
 	getAvailableVenues(){
 		var currDay = moment().format('d') - 1 
+
 		var currHour = moment().format('HH')
 		var currMin = moment().format('mm') < 30 ? "00" : "30"
 		var currTimeStart = currHour + currMin 
@@ -53,7 +34,10 @@ class Venues extends Component{
 
 		var venues = this.props.venues
 
-		return venues.map(venue => <VenueAvailable key={venue} venue={venue} venueInfoData={venueInfoData} daySelected={daySelected} timeSelected={timeSelected} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
+		if (daySelected < 0)
+			return <Card ><CardSection ><View style={{height: 100, justifyContent: "center", alignItems: 'center', flex: 1}}><Text style={{fontWeight: "bold", textAlign: 'center'}}>Not Available on Sundays</Text></View></CardSection></Card>
+		return venues.map(venue => <VenueAvailable key={venue} venue={venue} venueInfoData={venueInfoData} daySelected={daySelected} timeSelected={timeSelected} availability={venueInfoData.venueInfo[venue][daySelected].availability[timeSelected]} />)
+		// return venues.map(venue => <VenueAvailable key={venue} venue={venue} venueInfoData={venueInfoData} daySelected={daySelected} timeSelected={timeSelected} availability={venueInfoData.venueInfo[venue][currDay].availability[currTimeStart]} />)
 
 	}
 
@@ -67,7 +51,7 @@ class Venues extends Component{
 		var currTimeStart = currHour + currMin 
 
 		return (
-				<ScrollView  style={page}>
+				<ScrollView style={page}>
 					{/*<Text>Day: {moment().format('d')-1}</Text>
 					<Text>Time: {currTimeStart}</Text>*/}
 					{this.getAvailableVenues()}
@@ -84,6 +68,7 @@ class Venues extends Component{
 const styles = {
   page: {
     backgroundColor: '#ddd',
+    height: height
   },
   bottomSpace: {
   	marginBottom: 80
